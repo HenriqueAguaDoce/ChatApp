@@ -8,12 +8,13 @@ public class Contact {
 
     @PrimaryKey(autoGenerate = true)
     private long id;
-    private String fName, lName;
+    private String fristName;
+    private String lastName;
 
-    public Contact(long id, String fName, String lName) {
+    public Contact(long id, String fristName, String lastName) {
         this.id = id;
-        this.fName = fName;
-        this.lName = lName;
+        this.fristName = fristName;
+        this.lastName = lastName;
     }
 
     public long getId() {
@@ -24,24 +25,24 @@ public class Contact {
         this.id = id;
     }
 
-    public String getfName() {
-        return fName;
+    public String getFristName() {
+        return fristName;
     }
 
-    public void setfName(String fName) {
-        this.fName = fName;
+    public void setFristName(String fristName) {
+        this.fristName = fristName;
     }
 
-    public String getlName() {
-        return lName;
+    public String getLastName() {
+        return lastName;
     }
 
-    public void setlName(String lName) {
-        this.lName = lName;
+    public void setLastName(String lastName) {
+        this.lastName = lastName;
     }
 
     public String getFullName(){
-        return this.fName + " " + this.lName;
+        return this.fristName + " " + this.lastName;
     }
 
 }

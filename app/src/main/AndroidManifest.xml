@@ -17,7 +17,7 @@
             </intent-filter>
         </activity>
         <activity android:name=".CreateContactActivity" />
-        <activity android:name=".ViewChatActivity"></activity>
+        <activity android:name=".ViewChatActivity" />
     </application>
 
 </manifest>

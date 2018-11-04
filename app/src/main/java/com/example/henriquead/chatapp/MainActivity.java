@@ -21,7 +21,6 @@ public class MainActivity extends AppCompatActivity {
     private ContactAdapter adapter;
 
 
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -41,7 +40,6 @@ public class MainActivity extends AppCompatActivity {
         super.onStart();
 
         List<Contact> contacts = ContactDatabase.getInstance(this).contactDao().getAllContacts();
-
         this.adapter.setData(contacts);
     }
 
@@ -73,24 +71,18 @@ public class MainActivity extends AppCompatActivity {
             });
         }
 
-
         public void bind(Contact contact){
-
+            this.name.setText(contact.getFullName());
+            this.id.setText(Integer.toString((int) contact.getId()));
         }
-
-
-
     }
 
     public class ContactAdapter extends RecyclerView.Adapter<ContactViewHolder>{
-
         List<Contact> data = new ArrayList<>();
-
 
         @NonNull
         @Override
         public ContactViewHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int i) {
-
             View view = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.contact_layout, viewGroup,false);
             return new ContactViewHolder(view);
         }
