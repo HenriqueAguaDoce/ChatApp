@@ -1,6 +1,8 @@
 package com.example.henriquead.chatapp;
 
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
@@ -8,6 +10,8 @@ import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
@@ -51,6 +55,49 @@ public class ViewChatActivity extends AppCompatActivity {
         Intent starter = new Intent(context, ViewChatActivity.class);
         starter.putExtra("position", contactID);
         context.startActivity(starter);
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+
+        getMenuInflater().inflate(R.menu.chat, menu);
+
+        //return super.onCreateOptionsMenu(menu);
+        //Temos de devolver true, porque se não ele não mostra o menu
+
+        return true;
+    }
+
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+
+        switch (item.getItemId()){
+            case R.id.delete_messages:
+                this.getUserResponse();
+                return true;
+
+        }
+        return super.onOptionsItemSelected(item);
+    }
+
+    private AlertDialog getUserResponse() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setMessage("Pretende apagar as mensagens ?")
+                .setTitle("Apagar Mensagens");
+
+        builder.setPositiveButton("Sim", new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int id) {
+                adapter.deleteMessages();
+            }
+        });
+        builder.setNegativeButton("Não", null);
+
+        builder.setCancelable(false); // Se carregar fora sai do dialog, assim somos obrigados a carregar numa opção
+
+        return builder.show();
+
+
     }
 
     public void btn_imgSendMessagem(View view) {
@@ -98,6 +145,14 @@ public class ViewChatActivity extends AppCompatActivity {
     public class ChatAdapter extends RecyclerView.Adapter<ChatViewHolder>{
         List<Message> data = new ArrayList<>();
 
+
+
+        public void deleteMessages(){
+            MessageDatabase.getInstance(ViewChatActivity.this).messageDao().deleteMessagesForContact(pos);
+            adapter.deleteAll();
+
+        }
+
         @NonNull
         @Override
         public ChatViewHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int i) {
@@ -121,6 +176,12 @@ public class ViewChatActivity extends AppCompatActivity {
         public void setData(List<Message> messages) {
             this.data = messages;
             notifyDataSetChanged();
+        }
+
+        public void deleteAll(){
+            int count = data.size();
+            data.clear();
+            notifyItemRangeRemoved(0, count);
         }
     }
 }

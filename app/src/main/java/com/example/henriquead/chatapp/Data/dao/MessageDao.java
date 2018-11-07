@@ -25,4 +25,7 @@ public interface MessageDao {
     @Query("SELECT * FROM messages WHERE contactID = :contactID")
     List<Message> getAllMessages(long contactID);
 
+    @Query("DELETE FROM messages WHERE contactID = :contactID")
+    int deleteMessagesForContact(long contactID);
+
 }
