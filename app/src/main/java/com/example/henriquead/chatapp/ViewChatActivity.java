@@ -24,7 +24,7 @@ public class ViewChatActivity extends AppCompatActivity {
     private ChatAdapter adapter;
     private EditText createMessage;
     private String EXTRA = "position";
-    private int pos;
+    private long pos;
 
 
     @Override
@@ -41,15 +41,15 @@ public class ViewChatActivity extends AppCompatActivity {
         recyclerView.setAdapter(adapter);
 
         Intent i = getIntent();
-        int name = i.getIntExtra(EXTRA,0);
+        long name = i.getLongExtra(EXTRA,0);
         this.pos = name;
 
         this.createMessage = findViewById(R.id.txtCreateMessage);
     }
 
-    public static void start(Context context, int position) {
+    public static void start(Context context, long contactID) {
         Intent starter = new Intent(context, ViewChatActivity.class);
-        starter.putExtra("position", position);
+        starter.putExtra("position", contactID);
         context.startActivity(starter);
     }
 
@@ -57,7 +57,7 @@ public class ViewChatActivity extends AppCompatActivity {
         String newMessage = this.createMessage.getText().toString();
 
         Message message = new Message(0, this.pos, newMessage);
-        MessageDatabase.getInstance(this).messageDao().insert(message);
+        long id = MessageDatabase.getInstance(this).messageDao().insert(message);
 
         this.createMessage.setText("");
 

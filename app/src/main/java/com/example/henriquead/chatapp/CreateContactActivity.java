@@ -8,7 +8,7 @@ import android.view.View;
 import android.widget.EditText;
 
 import com.example.henriquead.chatapp.Data.Contact;
-import com.example.henriquead.chatapp.Data.ContactDatabase;
+import com.example.henriquead.chatapp.Data.MessageDatabase;
 
 public class CreateContactActivity extends AppCompatActivity {
     private EditText fName, lName;
@@ -34,7 +34,7 @@ public class CreateContactActivity extends AppCompatActivity {
 
         Contact contact = new Contact(0, first, last);
 
-        ContactDatabase.getInstance(this).contactDao().insert(contact);
+        MessageDatabase.getInstance(this).contactDao().insert(contact);
         finish();
     }
 }

@@ -8,11 +8,11 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.example.henriquead.chatapp.Data.Contact;
-import com.example.henriquead.chatapp.Data.ContactDatabase;
+import com.example.henriquead.chatapp.Data.MessageDatabase;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -39,7 +39,7 @@ public class MainActivity extends AppCompatActivity {
     protected void onStart() {
         super.onStart();
 
-        List<Contact> contacts = ContactDatabase.getInstance(this).contactDao().getAllContacts();
+        List<Contact> contacts = MessageDatabase.getInstance(this).contactDao().getAllContacts();
         this.adapter.setData(contacts);
     }
 
@@ -52,19 +52,39 @@ public class MainActivity extends AppCompatActivity {
 
         private TextView name;
         private TextView id;
+        private ImageView delete;
 
         public ContactViewHolder(@NonNull final View itemView) {
             super(itemView);
 
             this.name = itemView.findViewById(R.id.txtContactName);
             this.id = itemView.findViewById(R.id.txtListContactID);
+            this.delete = itemView.findViewById(R.id.imgDeleteConctact);
+
+            this.delete.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    int pos = getAdapterPosition();
+                    adapter.delete(pos);
+                }
+            });
+
+            this.itemView.setOnLongClickListener(new View.OnLongClickListener() {
+                @Override
+                public boolean onLongClick(View v) {
+                    int pos = getAdapterPosition();
+                    adapter.delete(pos);
+
+                    return true; // É para saber se tratei ou não do evento, digo sempre que sim :)
+                }
+            });
+
 
             this.itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    int position = getAdapterPosition();
-
-                    ViewChatActivity.start(MainActivity.this, position);
+                    long contactID = adapter.getContactID(getAdapterPosition());
+                    ViewChatActivity.start(MainActivity.this, contactID);
 
                     //Toast.makeText(MainActivity.this, "Item clicked " + position, Toast.LENGTH_SHORT).show();
                 }
@@ -79,6 +99,20 @@ public class MainActivity extends AppCompatActivity {
 
     public class ContactAdapter extends RecyclerView.Adapter<ContactViewHolder>{
         List<Contact> data = new ArrayList<>();
+
+        public long getContactID(int pos){
+            Contact contact = data.get(pos);
+            return contact.getId();
+        }
+
+
+        public void delete(int position){
+            Contact contact = data.get(position);
+            MessageDatabase.getInstance(MainActivity.this).contactDao().delete(contact);
+            data.remove(position);
+            notifyItemRemoved(position);
+        }
+
 
         @NonNull
         @Override

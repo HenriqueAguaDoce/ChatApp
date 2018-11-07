@@ -1,9 +1,15 @@
 package com.example.henriquead.chatapp.Data;
 
 import android.arch.persistence.room.Entity;
+import android.arch.persistence.room.ForeignKey;
 import android.arch.persistence.room.PrimaryKey;
 
-@Entity(tableName = "messages")
+import static android.arch.persistence.room.ForeignKey.CASCADE;
+
+@Entity(tableName = "messages", foreignKeys ={ @ForeignKey(entity = Contact.class,
+                                                            parentColumns = "id",
+                                                            childColumns = "contactID", onDelete = CASCADE)})
+
 public class Message {
 
     @PrimaryKey(autoGenerate = true)
