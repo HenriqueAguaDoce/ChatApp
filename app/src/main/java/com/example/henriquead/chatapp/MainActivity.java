@@ -6,6 +6,8 @@ import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
@@ -36,6 +38,26 @@ public class MainActivity extends AppCompatActivity {
     }
 
     @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+
+        getMenuInflater().inflate(R.menu.menu, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+
+        switch (item.getItemId()){
+            case R.id.contacts_map:
+                ConctactsMapActivity.start(this);
+                return true;
+
+        }
+
+        return super.onOptionsItemSelected(item);
+    }
+
+    @Override
     protected void onStart() {
         super.onStart();
 
@@ -52,6 +74,7 @@ public class MainActivity extends AppCompatActivity {
 
         private TextView name;
         private TextView id;
+        private TextView coordID;
         private ImageView delete;
 
         public ContactViewHolder(@NonNull final View itemView) {
@@ -60,6 +83,7 @@ public class MainActivity extends AppCompatActivity {
             this.name = itemView.findViewById(R.id.txtContactName);
             this.id = itemView.findViewById(R.id.txtListContactID);
             this.delete = itemView.findViewById(R.id.imgDeleteConctact);
+            this.coordID = itemView.findViewById(R.id.txtCoordinatesID);
 
             this.delete.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -94,6 +118,7 @@ public class MainActivity extends AppCompatActivity {
         public void bind(Contact contact){
             this.name.setText(contact.getFullName());
             this.id.setText(Integer.toString((int) contact.getId()));
+            this.coordID.setText(contact.getCoordinates().getLatitude() +", " + contact.getCoordinates().getLongitude());
         }
     }
 

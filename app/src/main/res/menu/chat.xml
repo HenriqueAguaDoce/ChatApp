@@ -8,4 +8,6 @@
         android:title="Delete all messages"
         app:showAsAction="always"
         android:iconTint="@color/white"/>
+
+
 </menu>

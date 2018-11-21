@@ -9,7 +9,7 @@ import android.content.Context;
 import com.example.henriquead.chatapp.Data.dao.ContactDao;
 import com.example.henriquead.chatapp.Data.dao.MessageDao;
 
-@Database(entities = {Message.class, Contact.class}, version = 3, exportSchema = false)
+@Database(entities = {Message.class, Contact.class}, version = 4, exportSchema = false)
 public abstract class MessageDatabase extends RoomDatabase {
 
     public static MessageDatabase instance = null;
